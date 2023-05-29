@@ -3,6 +3,7 @@ import streamlit as st
 from transformers import pipeline
 import boto3
 import json
+import os
 
 st.header('Welcome!')
 st.write('\n')
@@ -50,8 +51,14 @@ endpoint = st.text_input(label='SageMaker Model Endpoint')
 
 # summarize text
 if endpoint != '':
-    runtime = boto3.Session().client('sagemaker-runtime')
+    runtime = boto3.Session(
+        aws_access_key_id=os.environ.get('aws_access_key_id'), 
+        aws_secret_access_key=os.environ.get('aws_secret_access_key'), 
+        region_name=os.environ.get('region_name')
+        ).client('sagemaker-runtime')
     payload = json.dumps({"inputs": sample_text}).encode('utf-8')
     response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
     endpoint_summarized_text = json.loads(response['Body'].read().decode())
     st.success(endpoint_summarized_text[0]['summary_text'])
+else:
+    st.write('No Endpoint entered.')
