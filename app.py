@@ -54,8 +54,7 @@ if endpoint != '':
     runtime = boto3.Session(
         aws_access_key_id=os.environ.get('aws_access_key_id'), 
         aws_secret_access_key=os.environ.get('aws_secret_access_key'), 
-        region_name=os.environ.get('region_name')
-        ).client('sagemaker-runtime', region_name=os.environ.get('region_name'))
+        ).client('sagemaker-runtime')
     payload = json.dumps({"inputs": sample_text}).encode('utf-8')
     response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
     endpoint_summarized_text = json.loads(response['Body'].read().decode())
