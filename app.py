@@ -50,12 +50,8 @@ endpoint = st.text_input(label='SageMaker Model Endpoint')
 
 # summarize text
 if endpoint != '':
-    try:
-        runtime = boto3.Session().client('sagemaker-runtime')
-        payload = json.dumps({"inputs": sample_text}).encode('utf-8')
-        response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
-        endpoint_summarized_text = json.loads(response['Body'].read().decode())
-        
-        st.success(endpoint_summarized_text[0]['summary_text'])
-    except:
-        st.error('Error with Endpoint!')
+    runtime = boto3.Session().client('sagemaker-runtime')
+    payload = json.dumps({"inputs": sample_text}).encode('utf-8')
+    response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
+    endpoint_summarized_text = json.loads(response['Body'].read().decode())
+    st.success(endpoint_summarized_text[0]['summary_text'])
