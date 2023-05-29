@@ -53,7 +53,8 @@ endpoint = st.text_input(label='SageMaker Model Endpoint')
 if endpoint != '':
     runtime = boto3.Session(
         aws_access_key_id=os.environ.get('aws_access_key_id'), 
-        aws_secret_access_key=os.environ.get('aws_secret_access_key'), 
+        aws_secret_access_key=os.environ.get('aws_secret_access_key'),
+        region_name='us-east-1'
         ).client('sagemaker-runtime')
     payload = json.dumps({"inputs": sample_text}).encode('utf-8')
     response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
