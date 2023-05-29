@@ -47,12 +47,12 @@ st.write('\n')
 st.write('Input SageMaker Model Endpoint to use for summarization:')
 # define sagemaker endpoint
 endpoint = st.text_input(label='SageMaker Model Endpoint')
-runtime = boto3.Session().client('sagemaker-runtime')
-payload = json.dumps({"inputs": sample_text}).encode('utf-8')
 
 # summarize text
 if endpoint != '':
     try:
+        runtime = boto3.Session().client('sagemaker-runtime')
+        payload = json.dumps({"inputs": sample_text}).encode('utf-8')
         response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
         endpoint_summarized_text = json.loads(response['Body'].read().decode())
         
