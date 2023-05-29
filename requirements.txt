@@ -1,3 +1,4 @@
+boto3==1.26.142
 streamlit==1.22.0
 torch==2.0.1
 transformers==4.29.2
