@@ -11,7 +11,7 @@ st.write('\n')
 # cache model
 @st.cache_resource
 def init_summarizer_model():
-    summarizer_model = pipeline(task='summarization', model='google/pegasus-xsum')
+    summarizer_model = pipeline(task='summarization', model='sshleifer/distilbart-cnn-6-6')
     return summarizer_model
 
 # define model
