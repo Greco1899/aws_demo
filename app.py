@@ -51,11 +51,7 @@ endpoint = st.text_input(label='SageMaker Model Endpoint')
 
 # summarize text
 if endpoint != '':
-    runtime = boto3.Session(
-        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'), 
-        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
-        region_name='us-east-1'
-        ).client('sagemaker-runtime')
+    runtime = boto3.Session().client('sagemaker-runtime')
     payload = json.dumps({"inputs": sample_text}).encode('utf-8')
     response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
     endpoint_summarized_text = json.loads(response['Body'].read().decode())
