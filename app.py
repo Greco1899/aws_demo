@@ -62,7 +62,7 @@ else:
 
 st.write('Input SageMaker Model Endpoint to use for LLM prompting:')
 # define sagemaker endpoint
-llm_endpoint = st.text_input(label='SageMaker Model Endpoint')
+llm_endpoint = st.text_input(label='SageMaker LLM Endpoint')
 user_input = st.text_input(label='User Prompt')
                            
 # summarize text
