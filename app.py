@@ -51,7 +51,6 @@ endpoint = st.text_input(label='SageMaker Model Endpoint')
 
 # summarize text
 if endpoint != '':
-)
     payload = json.dumps({"inputs": sample_text}).encode('utf-8')
     response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
     endpoint_summarized_text = json.loads(response['Body'].read().decode())
