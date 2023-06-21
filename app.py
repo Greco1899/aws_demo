@@ -85,7 +85,7 @@ if llm_endpoint != '' and user_input != '':
         }
     }
     # Inference
-    response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
+    response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=llm_endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
     assistant_reply = json.loads(response['Body'].read().decode())
     st.success(assistant_reply[0]['generated_text'][len(prompt):])
 else:
