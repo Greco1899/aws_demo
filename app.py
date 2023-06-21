@@ -51,10 +51,43 @@ endpoint = st.text_input(label='SageMaker Model Endpoint')
 
 # summarize text
 if endpoint != '':
-    runtime = boto3.Session().client('sagemaker-runtime')
+)
     payload = json.dumps({"inputs": sample_text}).encode('utf-8')
-    response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
+    response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=payload)
     endpoint_summarized_text = json.loads(response['Body'].read().decode())
     st.success(endpoint_summarized_text[0]['summary_text'])
 else:
     st.write('No Endpoint entered.')
+
+
+
+st.write('Input SageMaker Model Endpoint to use for LLM prompting:')
+# define sagemaker endpoint
+llm_endpoint = st.text_input(label='SageMaker Model Endpoint')
+user_input = st.text_input(label='User Prompt')
+                           
+# summarize text
+if llm_endpoint != '' and user_input != '':
+    # define payload
+    prompt = f"""You are an helpful Assistant, called Falcon.
+    User:{user_input}
+    Falcon:"""
+
+    payload = {
+        "inputs": prompt,
+        "parameters": {
+            "do_sample": True,
+            "top_k": 50,
+            "top_p": 0.2,
+            "temperature": 0.8,
+            "max_new_tokens": 1024,
+            "repetition_penalty": 1.03,
+            "stop": ["\nUser:","<|endoftext|>","</s>"]
+        }
+    }
+    # Inference
+    response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
+    assistant_reply = json.loads(response['Body'].read().decode())
+    st.success(assistant_reply[0]['generated_text'][len(prompt):]))
+else:
+    st.write('No Endpoint and User Prompt entered.')
