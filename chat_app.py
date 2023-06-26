@@ -7,20 +7,20 @@ import json
 with gr.Blocks() as demo:
 
     # Define components and inputsAprove
-    endpoint_name = gr.Textbox(label="Endpoint")
+    endpoint_name = gr.Textbox(label='Endpoint')
     chatbot = gr.Chatbot()
     msg = gr.Textbox()
     clear = gr.ClearButton([msg, chatbot])
-    prompt = f"""You are an helpful Assistant, called Falcon.
+    prompt = f'''You are an helpful Assistant, called Falcon.
     User:{msg}
-    Falcon:"""
+    Falcon:'''
 
     def user(user_message, history):
-        return gr.update(value="", interactive=False), history + [[user_message, None]]
+        return gr.update(value='', interactive=False), history + [[user_message, None]]
 
     # def bot(history):
-    #     bot_message = random.choice(["How are you?", "I love you", "I'm very hungry"])
-    #     history[-1][1] = ""
+    #     bot_message = random.choice(['How are you?', 'I love you', 'I'm very hungry'])
+    #     history[-1][1] = ''
     #     for character in bot_message:
     #         history[-1][1] += character
     #         time.sleep(0.05)
@@ -30,15 +30,15 @@ with gr.Blocks() as demo:
 
         # Define Payload
         payload = {
-            "inputs": prompt,
-            "parameters": {
-                "do_sample": True,
-                "top_k": 50,
-                "top_p": 0.2,
-                "temperature": 0.8,
-                "max_new_tokens": 1024,
-                "repetition_penalty": 1.03,
-                "stop": ["\nUser:","<|endoftext|>","</s>"]
+            'inputs': prompt,
+            'parameters': {
+                'do_sample': True,
+                'top_k': 50,
+                'top_p': 0.2,
+                'temperature': 0.8,
+                'max_new_tokens': 1024,
+                'repetition_penalty': 1.03,
+                'stop': ['\nUser:','<|endoftext|>','</s>']
             }
         }
 
@@ -52,7 +52,7 @@ with gr.Blocks() as demo:
             bot_message = 'No Endpoint Entered'
 
         # Stream output
-        history[-1][1] = ""
+        history[-1][1] = ''
         for character in bot_message:
             history[-1][1] += character
             time.sleep(0.05)
@@ -64,5 +64,5 @@ with gr.Blocks() as demo:
     )
     response.then(lambda: gr.update(interactive=True), None, [msg], queue=False)
 
-demo.queue()
-demo.launch()
+demo.queue(concurrency_count=3)
+demo.launch(server_name='0.0.0.0')
