@@ -65,4 +65,4 @@ with gr.Blocks() as demo:
     response.then(lambda: gr.update(interactive=True), None, [msg], queue=False)
 
 demo.queue(concurrency_count=3)
-demo.launch(server_name='0.0.0.0')
+demo.launch(server_name='0.0.0.0', server_port=7860)
