@@ -1,5 +1,6 @@
-runtime: python
+runtime: custom
 env: flex
+service: st-llm-app
 
 runtime_config:
   operating_system: "ubuntu18"
