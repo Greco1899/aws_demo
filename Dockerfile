@@ -2,7 +2,7 @@
 FROM python:3.9
 
 # Expose ST port
-EXPOSE 8080
+EXPOSE 8501
 
 # Copy and install requirements
 COPY requirements.txt app/requirements.txt
@@ -15,5 +15,5 @@ COPY . /app
 WORKDIR /app
 
 # Run application
-ENTRYPOINT ["streamlit", "run", "gcp_app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "gcp_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 
