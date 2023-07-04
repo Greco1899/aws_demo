@@ -4,6 +4,7 @@ from transformers import pipeline
 import boto3
 import json
 import os
+print('Imports Successful')
 
 st.header('Welcome!')
 st.write('\n')
@@ -43,7 +44,7 @@ st.write('Here is your summarized text:')
 st.success(summarized_text)
 st.write('\n')
 st.write('\n')
-
+print('Complete Default Summarization')
 
 st.write('Input SageMaker Model Endpoint to use for summarization:')
 # define sagemaker endpoint
@@ -90,3 +91,5 @@ if llm_endpoint != '' and user_input != '':
     st.success(assistant_reply[0]['generated_text'][len(prompt):])
 else:
     st.write('No Endpoint and User Prompt entered.')
+
+print('End of app')
