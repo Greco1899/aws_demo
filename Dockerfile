@@ -15,5 +15,5 @@ COPY . /app
 WORKDIR /app
 
 # Run application
-ENTRYPOINT ["streamlit", "run", "gcp_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "gcp_app.py", "--server.port=8080", "--server.address=0.0.0.0"]
 
