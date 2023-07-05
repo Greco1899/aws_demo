@@ -1,6 +1,6 @@
 runtime: custom
 env: flex
-service: st-llm-app
+service: default
 
 runtime_config:
   operating_system: "ubuntu18"
