@@ -2,7 +2,7 @@
 FROM python:3.9
 
 # Expose ST port
-EXPOSE 8501
+EXPOSE 8080
 
 # Copy and install requirements
 COPY requirements.txt app/requirements.txt
