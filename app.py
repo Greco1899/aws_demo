@@ -55,6 +55,12 @@ st.write('\n')
 
 st.write('What do you want to find out from the text?')
 user_question = st.text_input(label='Enter your own question or use the sample provided.', value='When was MAS founded?')
+st.markdown('''
+    Other sample questions:  
+    When was Amazon founded?  
+    What did MAS do during the pandemic?  
+    What did ECB do during the pandemic?
+    ''')
 st.write('\n')
 st.write('\n')
 
@@ -64,8 +70,8 @@ st.write('\n')
 st.write('\n')
 
 if llm_option == 'Anthropic Claude 2.0':
-    anthropic = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
-    # anthropic = Anthropic(api_key='')
+    # anthropic = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+    anthropic = Anthropic(api_key='')
 
     summarization_prompt='Summarize the following text as a short paragraph:'
     completion = anthropic.completions.create(
@@ -132,7 +138,7 @@ elif llm_option == 'Falcon 40B':
             "stop": ["\nUser:","<|endoftext|>","</s>"]
         }
     }
-    
+
     # Inference
     response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=llm_endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
     response = json.loads(response['Body'].read().decode())
