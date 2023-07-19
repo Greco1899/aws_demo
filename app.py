@@ -65,13 +65,13 @@ st.write('\n')
 st.write('\n')
 
 st.write('Select LLM to use for summarization and extraction:')
-llm_option = st.radio(label='Large Language Model', options=['Anthropic Claude 2.0', 'Falcon 40B'])
+llm_option = st.radio(label='Large Language Model', options=['Claude', 'Falcon'])
 st.write('\n')
 st.write('\n')
 
-if llm_option == 'Anthropic Claude 2.0':
-    # anthropic = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
-    anthropic = Anthropic(api_key='')
+if llm_option == 'Claude':
+    anthropic = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+    # anthropic = Anthropic(api_key='')
 
     summarization_prompt='Summarize the following text as a short paragraph:'
     completion = anthropic.completions.create(
@@ -91,9 +91,9 @@ if llm_option == 'Anthropic Claude 2.0':
     st.write('LLM Response:')
     st.success(completion.completion)
 
-elif llm_option == 'Falcon 40B':
+elif llm_option == 'Falcon':
     # llm_endpoint = ''
-    llm_endpoint = os.environ.get("FALCON_40B_ENDPOINT")
+    llm_endpoint = os.environ.get("FALCON_ENDPOINT")
 
     summarization_prompt='Summarize the following text as a short paragraph:'
     # define payload
