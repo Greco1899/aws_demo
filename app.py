@@ -125,8 +125,8 @@ elif llm_option == 'TII - Falcon 40B':
 
     extraction_prompt='Given this CONTEXT, answer the following question. If you do not know the answer, just say that you do not know. Do not try to make up an answer.'
     # define payload
-    prompt = f"""You are an helpful Assistant, called Falcon.
-    User:{'CONTEXT'+sample_text+extraction_prompt+user_question}
+    prompt = f"""You are an Assistant, called Falcon.
+    User:{'CONTEXT:'+"'''"+sample_text+"'''"+extraction_prompt+user_question}
     Falcon:"""
 
     payload = {
