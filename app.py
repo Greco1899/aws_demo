@@ -95,10 +95,10 @@ elif llm_option == 'Falcon':
     # llm_endpoint = ''
     llm_endpoint = os.environ.get("FALCON_ENDPOINT")
 
-    summarization_prompt='Summarize the following text as a short paragraph:'
+    summarization_prompt='Summarize the following TEXT as a short paragraph:'
     # define payload
     prompt = f"""You are an helpful Assistant, called Falcon.
-    User:{summarization_prompt+sample_text}
+    User:{summarization_prompt+"TEXT:"+"'''"+sample_text+"'''"}
     Falcon:"""
 
     payload = {
