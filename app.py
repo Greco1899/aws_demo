@@ -65,39 +65,41 @@ st.write('\n')
 st.write('\n')
 
 st.write('Select LLM to use for summarization and extraction:')
-llm_option = st.radio(label='Large Language Model', options=['Claude', 'Falcon'])
+llm_option = st.radio(label='Large Language Model', options=['Anthropic - Claude 2.0', 'TII - Falcon 40B'])
 st.write('\n')
 st.write('\n')
 
-if llm_option == 'Claude':
+if llm_option == 'Anthropic - Claude 2.0':
     anthropic = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
     # anthropic = Anthropic(api_key='')
 
     summarization_prompt='Summarize the following text as a short paragraph:'
-    completion = anthropic.completions.create(
-        model="claude-2",
-        max_tokens_to_sample=300,
-        prompt=f"{HUMAN_PROMPT} {summarization_prompt+sample_text} {AI_PROMPT}",
-    )
+    with st.spinner('Generation summary...'):
+        completion = anthropic.completions.create(
+            model="claude-2",
+            max_tokens_to_sample=300,
+            prompt=f"{HUMAN_PROMPT} {summarization_prompt+sample_text} {AI_PROMPT}",
+        )    
     st.write('LLM Summary:')
     st.success(completion.completion)
 
     extraction_prompt='Given this CONTEXT, answer the following question. If you do not know the answer, just say that you do not know. Do not try to make up an answer.'
-    completion = anthropic.completions.create(
-        model="claude-2",
-        max_tokens_to_sample=300,
-        prompt=f"{HUMAN_PROMPT} {'CONTEXT:'+sample_text+extraction_prompt+user_question} {AI_PROMPT}",
-        )
+    with st.spinner('Generating answer...'):
+        completion = anthropic.completions.create(
+            model="claude-2",
+            max_tokens_to_sample=300,
+            prompt=f"{HUMAN_PROMPT} {'CONTEXT:'+sample_text+extraction_prompt+user_question} {AI_PROMPT}",
+            )
     st.write('LLM Response:')
     st.success(completion.completion)
 
-elif llm_option == 'Falcon':
+elif llm_option == 'TII - Falcon 40B':
     # llm_endpoint = ''
     llm_endpoint = os.environ.get("FALCON_ENDPOINT")
 
-    summarization_prompt='Summarize the following TEXT in less than 100 words:'
+    summarization_prompt='Write summary of the following TEXT. Do not use more than 100 words. Do not regurgitate from TEXT.'
     # define payload
-    prompt = f"""You are an helpful Assistant, called Falcon.
+    prompt = f"""You are an Assistant, called Falcon.
     User:{summarization_prompt+"TEXT:"+"'''"+sample_text+"'''"}
     Falcon:"""
 
@@ -105,9 +107,9 @@ elif llm_option == 'Falcon':
         "inputs": prompt,
         "parameters": {
             "do_sample": True,
-            "top_k": 50,
-            "top_p": 0.2,
-            "temperature": 0.8,
+            "top_k": 40,
+            "top_p": 0.9,
+            "temperature": 0.2,
             "max_new_tokens": 1024,
             "repetition_penalty": 1.03,
             "stop": ["\nUser:","<|endoftext|>","</s>"]
@@ -115,7 +117,8 @@ elif llm_option == 'Falcon':
     }
 
     # Inference
-    response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=llm_endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
+    with st.spinner('Generating summary...'):
+        response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=llm_endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
     response = json.loads(response['Body'].read().decode())
     st.write('LLM Summary:')
     st.success(response[0]['generated_text'][len(prompt):])
@@ -130,9 +133,9 @@ elif llm_option == 'Falcon':
         "inputs": prompt,
         "parameters": {
             "do_sample": True,
-            "top_k": 50,
-            "top_p": 0.2,
-            "temperature": 0.8,
+            "top_k": 40,
+            "top_p": 0.9,
+            "temperature": 0.2,
             "max_new_tokens": 1024,
             "repetition_penalty": 1.03,
             "stop": ["\nUser:","<|endoftext|>","</s>"]
@@ -140,7 +143,8 @@ elif llm_option == 'Falcon':
     }
 
     # Inference
-    response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=llm_endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
+    with st.spinner('Generating answer...'):
+        response = boto3.client('sagemaker-runtime').invoke_endpoint(EndpointName=llm_endpoint, ContentType='application/json', Body=json.dumps(payload).encode('utf-8'))
     response = json.loads(response['Body'].read().decode())
     st.write('LLM Response:')
     st.success(response[0]['generated_text'][len(prompt):])
