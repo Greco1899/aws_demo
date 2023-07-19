@@ -54,10 +54,10 @@ st.write('\n')
 # st.write('\n')
 
 st.write('What do you want to find out from the text?')
-user_question = st.text_input(label='Enter your own question or use the sample provided.', value='When was MAS founded?')
+user_question = st.text_input(label='Enter your own question or use the sample provided.', value='When was MAS established?')
 st.markdown('''
     Other sample questions:  
-    When was Amazon founded?  
+    When was Amazon established?  
     What did MAS do during the pandemic?  
     What did ECB do during the pandemic?
     ''')
