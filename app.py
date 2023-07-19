@@ -14,7 +14,7 @@ with col1:
     st.markdown('## Instant insights from any report or text')
     st.write('Start to summarize and question your document to get to what you really need!')
 with col2:
-    st.image('Mirage Logo.png', width=250)
+    st.image('aws_demo/Mirage Logo.png', width=250)
 st.write('\n')
 st.write('\n')
 
